@@ -286,12 +286,17 @@ If GSC auth fails or you pass `--skip-gsc`, the audit still runs using only code
 
 PRs welcome. The code is small and split into one file per pipeline step in `src/steps/`. Open an issue first for non-trivial changes.
 
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for full setup, testing, code style, and release instructions.
+
+Quick start:
+
 ```bash
 git clone https://github.com/manojahi/serpiq
 cd serpiq
 npm install
 npm run build
-node dist/index.js audit --skip-gsc   # local test
+npm link
+npm test
 ```
 
 ## Roadmap

@@ -14,7 +14,7 @@ function isoDaysAgo(days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-function urlPath(u: string): string {
+export function urlPath(u: string): string {
   try {
     return new URL(u).pathname;
   } catch {
@@ -23,7 +23,7 @@ function urlPath(u: string): string {
 }
 
 /** Detect URL patterns the site already uses for pSEO (e.g. /decline-codes/*, /alternatives/*). */
-function detectClusters(pages: GSCPageRow[]): PageCluster[] {
+export function detectClusters(pages: GSCPageRow[]): PageCluster[] {
   const groups = new Map<string, GSCPageRow[]>();
   for (const p of pages) {
     const path = urlPath(p.page);
@@ -59,7 +59,7 @@ function detectClusters(pages: GSCPageRow[]): PageCluster[] {
 }
 
 /** Build per-page reports with their top driving queries. */
-function buildPagesWithQueries(pages: GSCPageRow[], queries: GSCQueryRow[]): PageWithQueries[] {
+export function buildPagesWithQueries(pages: GSCPageRow[], queries: GSCQueryRow[]): PageWithQueries[] {
   const queriesByPage = new Map<string, GSCQueryRow[]>();
   for (const q of queries) {
     if (!q.page) continue;
@@ -88,7 +88,7 @@ function buildPagesWithQueries(pages: GSCPageRow[], queries: GSCQueryRow[]): Pag
 }
 
 /** Diagnose the site stage from GSC signals. Drives the entire audit strategy. */
-function diagnoseSite(args: {
+export function diagnoseSite(args: {
   totalImpressions: number;
   totalClicks: number;
   avgCtr: number;
@@ -216,7 +216,7 @@ function diagnoseSite(args: {
 }
 
 /** Pick thresholds that scale with the site's total impressions. */
-function adaptiveThresholds(totalImpressions: number) {
+export function adaptiveThresholds(totalImpressions: number) {
   if (totalImpressions >= 50_000) {
     return { strikingMinImpressions: 50, lowCtrMinImpressions: 200, lowCtrMaxCtr: 0.02 };
   }

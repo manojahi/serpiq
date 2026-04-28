@@ -81,7 +81,7 @@ export async function runOAuthFlow(): Promise<void> {
 
     const shutdown = () => {
       if (timeoutHandle) clearTimeout(timeoutHandle);
-      try { (server as any).closeAllConnections?.(); } catch {}
+      try { server.closeAllConnections?.(); } catch {}
       try { server.close(); } catch {}
     };
 

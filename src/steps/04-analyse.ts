@@ -1,5 +1,5 @@
 import type { LLMClient } from '../lib/llm.js';
-import { extractJSON } from '../lib/json.js';
+import { extractJSON, withJSONRetry } from '../lib/json.js';
 import type {
   AuditReport,
   BlogBrief,
@@ -480,7 +480,7 @@ export async function analyseSEO(
   const briefPromises = briefSeeds.map(async (seed, i) => {
     progress?.onBriefStart?.(i, briefSeeds.length, seed.title);
     try {
-      const brief = await expandBrief(seed, product, gsc, llm);
+      const brief = await withJSONRetry(() => expandBrief(seed, product, gsc, llm));
       progress?.onBriefComplete?.(i, briefSeeds.length, seed.title);
       return brief;
     } catch {
@@ -492,7 +492,7 @@ export async function analyseSEO(
   const pseoPromises = pseoSeeds.map(async (seed, i) => {
     progress?.onPseoStart?.(i, pseoSeeds.length, seed.template_name);
     try {
-      const plan = await expandPseo(seed, product, gsc, llm);
+      const plan = await withJSONRetry(() => expandPseo(seed, product, gsc, llm));
       progress?.onPseoComplete?.(i, pseoSeeds.length, seed.template_name);
       return plan;
     } catch {

@@ -61,6 +61,12 @@ export function getConfigPaths() {
   return { CONFIG_DIR, CONFIG_PATH, CREDENTIALS_PATH };
 }
 
+function setRawMode(stream: NodeJS.ReadStream, enabled: boolean): void {
+  if (stream.isTTY && typeof stream.setRawMode === 'function') {
+    stream.setRawMode(enabled);
+  }
+}
+
 function prompt(question: string, mask = false): Promise<string> {
   return new Promise(resolve => {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: true });
@@ -72,7 +78,7 @@ function prompt(question: string, mask = false): Promise<string> {
         const ch = chunk.toString('utf8');
         if (ch === '\n' || ch === '\r' || ch === '\u0004') {
           stdin.removeListener('data', onData);
-          if (typeof (stdin as any).setRawMode === 'function') (stdin as any).setRawMode(false);
+          setRawMode(stdin, false);
           stdin.pause();
           process.stdout.write('\n');
           rl.close();
@@ -89,7 +95,7 @@ function prompt(question: string, mask = false): Promise<string> {
           process.stdout.write('*');
         }
       };
-      if (typeof (stdin as any).setRawMode === 'function') (stdin as any).setRawMode(true);
+      setRawMode(stdin, true);
       stdin.resume();
       stdin.on('data', onData);
     } else {
