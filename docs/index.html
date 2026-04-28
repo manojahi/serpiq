@@ -736,6 +736,244 @@
           padding: 16px;
         }
       }
+
+      /* ---------- Install methods grid ---------- */
+      .install-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 32px;
+      }
+      .install-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        position: relative;
+      }
+      .install-card.recommended {
+        border-color: var(--accent-dim);
+      }
+      .install-card .badge {
+        position: absolute;
+        top: -10px;
+        right: 14px;
+        background: var(--accent);
+        color: #062a32;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.04em;
+      }
+      .install-card h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+        color: var(--text);
+        font-weight: 600;
+      }
+      .install-card p.install-desc {
+        margin: 0 0 14px;
+        font-size: 12.5px;
+        color: var(--text-dim);
+        line-height: 1.55;
+      }
+      .install-cmd {
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text);
+        word-break: break-all;
+        position: relative;
+      }
+      .install-cmd .prompt {
+        color: var(--accent);
+        margin-right: 6px;
+      }
+      .install-cmd + .install-cmd {
+        margin-top: 6px;
+      }
+      .install-cmd .mini-copy {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        font-family: var(--mono);
+        font-size: 10px;
+        padding: 3px 7px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 120ms ease;
+      }
+      .install-cmd .mini-copy:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .install-cmd .mini-copy.copied {
+        color: var(--success);
+        border-color: var(--success);
+      }
+      @media (max-width: 760px) {
+        .install-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ---------- Command builder ---------- */
+      .builder {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px;
+        margin-top: 28px;
+      }
+      .builder-step {
+        margin-bottom: 22px;
+      }
+      .builder-step:last-of-type {
+        margin-bottom: 0;
+      }
+      .builder-step-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--text-dim);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .builder-step-num {
+        background: var(--bg-code);
+        border: 1px solid var(--border-strong);
+        color: var(--accent);
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .option-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 8px;
+      }
+      .option-btn {
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 12px 14px;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 13px;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 120ms ease, background 120ms ease;
+      }
+      .option-btn:hover {
+        border-color: var(--border-strong);
+      }
+      .option-btn.active {
+        border-color: var(--accent);
+        background: rgba(34, 211, 238, 0.06);
+      }
+      .option-btn .opt-title {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .option-btn .opt-desc {
+        display: block;
+        font-size: 11.5px;
+        color: var(--text-dim);
+        font-weight: 400;
+      }
+      .builder-input {
+        width: 100%;
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 11px 13px;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 13px;
+        outline: none;
+        transition: border-color 120ms ease;
+      }
+      .builder-input:focus {
+        border-color: var(--accent);
+      }
+      .builder-input::placeholder {
+        color: var(--text-faint);
+      }
+      .builder-hint {
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-top: 6px;
+      }
+      .builder-output {
+        margin-top: 28px;
+        background: var(--bg-code);
+        border: 1px solid var(--accent-dim);
+        border-radius: var(--radius);
+        padding: 18px 20px;
+        position: relative;
+      }
+      .builder-output-label {
+        font-size: 11px;
+        color: var(--accent);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .builder-output pre {
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.65;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .builder-output .prompt {
+        color: var(--accent);
+        margin-right: 6px;
+      }
+      .builder-output .copy-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+      }
+      .builder-output .env-block {
+        color: var(--text-dim);
+        margin-bottom: 4px;
+      }
+      .builder-output .pipe {
+        color: var(--text-faint);
+      }
+      .builder-conditional {
+        display: none;
+      }
+      .builder-conditional.visible {
+        display: block;
+      }
+      @media (max-width: 760px) {
+        .builder {
+          padding: 18px;
+        }
+        .option-grid {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
@@ -745,6 +983,8 @@
           <span class="prompt">$</span>serp<span class="iq">IQ</span>
         </a>
         <div class="nav-actions">
+          <a href="#install-methods" class="ghost-link">Install</a>
+          <a href="#builder" class="ghost-link">Build a command</a>
           <a href="#how" class="ghost-link">How it works</a>
           <a href="https://github.com/manojahi/serpiq#readme" class="ghost-link" target="_blank" rel="noopener">Docs</a>
           <a
@@ -806,6 +1046,202 @@
               </svg>
               Read the Docs
             </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Install methods -->
+      <section id="install-methods">
+        <div class="wrap">
+          <p class="eyebrow">Install</p>
+          <h2>Three ways to run it.</h2>
+          <p class="section-lede">
+            Pick whichever fits your workflow. All three run the exact same code.
+          </p>
+
+          <div class="install-grid">
+            <div class="install-card recommended">
+              <span class="badge">RECOMMENDED</span>
+              <h3>npx (zero install)</h3>
+              <p class="install-desc">
+                Run the latest version on demand. No global pollution, always up to date.
+              </p>
+              <div class="install-cmd">
+                <span class="prompt">$</span>npx serpiq audit --site https://yoursite.com
+                <button class="mini-copy" data-copy="npx serpiq audit --site https://yoursite.com">Copy</button>
+              </div>
+            </div>
+
+            <div class="install-card">
+              <h3>Global install</h3>
+              <p class="install-desc">
+                Get the <code style="color: var(--accent)">serpiq</code> command everywhere on your machine.
+              </p>
+              <div class="install-cmd">
+                <span class="prompt">$</span>npm install -g serpiq
+                <button class="mini-copy" data-copy="npm install -g serpiq">Copy</button>
+              </div>
+              <div class="install-cmd">
+                <span class="prompt">$</span>serpiq audit --site https://yoursite.com
+                <button class="mini-copy" data-copy="serpiq audit --site https://yoursite.com">Copy</button>
+              </div>
+            </div>
+
+            <div class="install-card">
+              <h3>Per-project</h3>
+              <p class="install-desc">
+                Pin the version in your repo's <code style="color: var(--accent)">package.json</code>.
+              </p>
+              <div class="install-cmd">
+                <span class="prompt">$</span>npm install --save-dev serpiq
+                <button class="mini-copy" data-copy="npm install --save-dev serpiq">Copy</button>
+              </div>
+              <div class="install-cmd">
+                <span class="prompt">$</span>npx serpiq audit --site https://yoursite.com
+                <button class="mini-copy" data-copy="npx serpiq audit --site https://yoursite.com">Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive command builder -->
+      <section id="builder">
+        <div class="wrap">
+          <p class="eyebrow">Build your command</p>
+          <h2>Answer 5 questions, copy the command.</h2>
+          <p class="section-lede">
+            Tell us about your setup and we'll generate the exact command to run.
+          </p>
+
+          <div class="builder">
+            <div class="builder-step">
+              <div class="builder-step-label">
+                <span class="builder-step-num">1</span> How do you want to install it?
+              </div>
+              <div class="option-grid" data-step="install">
+                <button class="option-btn active" data-value="npx">
+                  <span class="opt-title">npx</span>
+                  <span class="opt-desc">Zero install, always latest</span>
+                </button>
+                <button class="option-btn" data-value="global">
+                  <span class="opt-title">Global</span>
+                  <span class="opt-desc">npm install -g serpiq</span>
+                </button>
+                <button class="option-btn" data-value="local">
+                  <span class="opt-title">Per-project</span>
+                  <span class="opt-desc">npm install --save-dev</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="builder-step">
+              <div class="builder-step-label">
+                <span class="builder-step-num">2</span> Which LLM provider?
+              </div>
+              <div class="option-grid" data-step="provider">
+                <button class="option-btn active" data-value="anthropic">
+                  <span class="opt-title">Anthropic</span>
+                  <span class="opt-desc">Claude Sonnet 4.5 (best quality)</span>
+                </button>
+                <button class="option-btn" data-value="openai">
+                  <span class="opt-title">OpenAI</span>
+                  <span class="opt-desc">GPT-4o</span>
+                </button>
+                <button class="option-btn" data-value="openrouter">
+                  <span class="opt-title">OpenRouter</span>
+                  <span class="opt-desc">One key, 400+ models</span>
+                </button>
+                <button class="option-btn" data-value="openai-compatible">
+                  <span class="opt-title">OpenAI-compatible</span>
+                  <span class="opt-desc">Groq, Together, Mistral, etc.</span>
+                </button>
+                <button class="option-btn" data-value="ollama">
+                  <span class="opt-title">Ollama (local)</span>
+                  <span class="opt-desc">Free, runs on your machine</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="builder-step builder-conditional" data-show-if-provider="anthropic openai openrouter openai-compatible ollama">
+              <div class="builder-step-label">
+                <span class="builder-step-num">3</span> Which model? <span style="text-transform: none; letter-spacing: 0; color: var(--text-faint); font-size: 12px;">(optional)</span>
+              </div>
+              <input
+                type="text"
+                class="builder-input"
+                id="builderModel"
+                placeholder="leave blank for default"
+              />
+              <div class="builder-hint" id="modelHint"></div>
+            </div>
+
+            <div class="builder-step builder-conditional" data-show-if-provider="openai-compatible">
+              <div class="builder-step-label">
+                <span class="builder-step-num">3a</span> Base URL
+              </div>
+              <input
+                type="text"
+                class="builder-input"
+                id="builderBaseUrl"
+                placeholder="https://api.groq.com/openai/v1"
+              />
+              <div class="builder-hint">
+                Endpoint of your OpenAI-compatible provider.
+              </div>
+            </div>
+
+            <div class="builder-step">
+              <div class="builder-step-label">
+                <span class="builder-step-num">4</span> Google Search Console property
+              </div>
+              <input
+                type="text"
+                class="builder-input"
+                id="builderSite"
+                placeholder="sc-domain:yoursite.com  or  https://yoursite.com/"
+              />
+              <div class="builder-hint">
+                Use <code style="color: var(--accent)">sc-domain:yoursite.com</code> for Domain properties or
+                the full URL for URL-prefix properties. Leave blank to skip GSC.
+              </div>
+            </div>
+
+            <div class="builder-step">
+              <div class="builder-step-label">
+                <span class="builder-step-num">5</span> GSC lookback period
+              </div>
+              <div class="option-grid" data-step="days">
+                <button class="option-btn" data-value="7">
+                  <span class="opt-title">7 days</span>
+                  <span class="opt-desc">recent only</span>
+                </button>
+                <button class="option-btn" data-value="30">
+                  <span class="opt-title">30 days</span>
+                  <span class="opt-desc">monthly view</span>
+                </button>
+                <button class="option-btn active" data-value="90">
+                  <span class="opt-title">90 days</span>
+                  <span class="opt-desc">recommended default</span>
+                </button>
+                <button class="option-btn" data-value="180">
+                  <span class="opt-title">180 days</span>
+                  <span class="opt-desc">includes decline detection</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="builder-output">
+              <div class="builder-output-label">Your command</div>
+              <button class="copy-btn" id="builderCopy" aria-label="Copy command">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+                  <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+                </svg>
+                <span class="copy-label">Copy</span>
+              </button>
+              <pre id="builderCommand"></pre>
+            </div>
           </div>
         </div>
       </section>
@@ -1390,6 +1826,195 @@
 
         if (playBtn) playBtn.addEventListener('click', runDemo);
         if (resetBtn) resetBtn.addEventListener('click', resetDemo);
+      })();
+
+      // Mini copy buttons (install methods cards)
+      (function () {
+        var btns = document.querySelectorAll('.mini-copy');
+        btns.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var text = btn.getAttribute('data-copy') || '';
+            if (!navigator.clipboard) return;
+            navigator.clipboard.writeText(text).then(function () {
+              var prev = btn.textContent;
+              btn.textContent = 'Copied';
+              btn.classList.add('copied');
+              setTimeout(function () {
+                btn.textContent = prev;
+                btn.classList.remove('copied');
+              }, 1400);
+            });
+          });
+        });
+      })();
+
+      // Interactive command builder
+      (function () {
+        var DEFAULT_MODELS = {
+          anthropic: 'claude-sonnet-4-5',
+          openai: 'gpt-4o',
+          openrouter: 'anthropic/claude-sonnet-4.5',
+          'openai-compatible': 'gpt-4o',
+          ollama: 'llama3',
+        };
+        var ENV_KEYS = {
+          anthropic: 'ANTHROPIC_API_KEY',
+          openai: 'OPENAI_API_KEY',
+          openrouter: 'OPENROUTER_API_KEY',
+          'openai-compatible': 'OPENAI_API_KEY',
+        };
+        var MODEL_HINTS = {
+          anthropic: 'Default: claude-sonnet-4-5. Other options: claude-opus-4-1, claude-haiku-4-5.',
+          openai: 'Default: gpt-4o. Other options: gpt-4o-mini, o1, gpt-4-turbo.',
+          openrouter:
+            'Default: anthropic/claude-sonnet-4.5. Try openai/gpt-4o, google/gemini-2.0-flash-001, meta-llama/llama-3.3-70b-instruct.',
+          'openai-compatible': 'Provider-specific. e.g. llama-3.3-70b-versatile (Groq), mixtral-8x7b (Together).',
+          ollama: 'Default: llama3. Pull with `ollama pull <model>` first. Bigger models = better audits.',
+        };
+
+        var state = { install: 'npx', provider: 'anthropic', days: '90' };
+
+        function selectIn(scope) {
+          return scope.querySelector('.option-btn.active');
+        }
+
+        function bindGroup(stepName) {
+          var group = document.querySelector('[data-step="' + stepName + '"]');
+          if (!group) return;
+          group.querySelectorAll('.option-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              group
+                .querySelectorAll('.option-btn')
+                .forEach(function (b) { b.classList.remove('active'); });
+              btn.classList.add('active');
+              state[stepName] = btn.getAttribute('data-value');
+              render();
+            });
+          });
+        }
+
+        function showConditional() {
+          document
+            .querySelectorAll('.builder-conditional')
+            .forEach(function (el) {
+              var allow = (el.getAttribute('data-show-if-provider') || '').split(/\s+/);
+              if (allow.indexOf(state.provider) !== -1) {
+                el.classList.add('visible');
+              } else {
+                el.classList.remove('visible');
+              }
+            });
+        }
+
+        function buildCommand() {
+          var parts = [];
+          var prefix = state.install === 'global' ? 'serpiq' : 'npx serpiq';
+
+          var modelInput = (document.getElementById('builderModel').value || '').trim();
+          var baseUrlInput = (document.getElementById('builderBaseUrl').value || '').trim();
+          var siteInput = (document.getElementById('builderSite').value || '').trim();
+
+          var envBlock = '';
+          if (state.provider !== 'ollama') {
+            var envKey = ENV_KEYS[state.provider];
+            envBlock = 'export ' + envKey + '=YOUR_API_KEY';
+          }
+
+          parts.push(prefix);
+          parts.push('audit');
+
+          if (state.provider !== 'anthropic') {
+            parts.push('--provider ' + state.provider);
+          }
+          if (modelInput) {
+            parts.push('--model ' + modelInput);
+          }
+          if (state.provider === 'openai-compatible' && baseUrlInput) {
+            parts.push('--base-url ' + baseUrlInput);
+          }
+          if (siteInput) {
+            parts.push('--site ' + siteInput);
+          } else {
+            parts.push('--skip-gsc');
+          }
+          if (state.days !== '90') {
+            parts.push('--days ' + state.days);
+          }
+
+          var cmd = parts.join(' \\\n  ');
+
+          var preBlocks = [];
+          if (state.install === 'global') {
+            preBlocks.push('npm install -g serpiq');
+          } else if (state.install === 'local') {
+            preBlocks.push('npm install --save-dev serpiq');
+          }
+          if (envBlock) preBlocks.push(envBlock);
+
+          return { pre: preBlocks, cmd: cmd, copyText: preBlocks.concat([cmd.replace(/ \\\n  /g, ' ')]).join('\n') };
+        }
+
+        function escapeHtml(s) {
+          return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function render() {
+          showConditional();
+          var hint = MODEL_HINTS[state.provider] || '';
+          var hintEl = document.getElementById('modelHint');
+          if (hintEl) hintEl.textContent = hint;
+
+          var modelInput = document.getElementById('builderModel');
+          if (modelInput) {
+            modelInput.placeholder = 'leave blank for default (' + (DEFAULT_MODELS[state.provider] || '') + ')';
+          }
+
+          var built = buildCommand();
+          var html = '';
+          built.pre.forEach(function (line) {
+            html += '<span class="env-block"># ' +
+              (line.indexOf('export') === 0 ? 'set your API key' : 'install serpiq once') +
+              '</span>\n';
+            html += '<span class="prompt">$</span>' + escapeHtml(line) + '\n\n';
+          });
+          html += '<span class="prompt">$</span>' + escapeHtml(built.cmd);
+          var pre = document.getElementById('builderCommand');
+          if (pre) pre.innerHTML = html;
+
+          var copyBtn = document.getElementById('builderCopy');
+          if (copyBtn) copyBtn.setAttribute('data-copy-text', built.copyText);
+        }
+
+        bindGroup('install');
+        bindGroup('provider');
+        bindGroup('days');
+
+        ['builderModel', 'builderBaseUrl', 'builderSite'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.addEventListener('input', render);
+        });
+
+        var copyBtn = document.getElementById('builderCopy');
+        if (copyBtn) {
+          copyBtn.addEventListener('click', function () {
+            var text = copyBtn.getAttribute('data-copy-text') || '';
+            if (!navigator.clipboard || !text) return;
+            navigator.clipboard.writeText(text).then(function () {
+              var label = copyBtn.querySelector('.copy-label');
+              var prev = label ? label.textContent : '';
+              if (label) label.textContent = 'Copied';
+              copyBtn.style.borderColor = 'var(--success)';
+              copyBtn.style.color = 'var(--success)';
+              setTimeout(function () {
+                if (label) label.textContent = prev;
+                copyBtn.style.borderColor = '';
+                copyBtn.style.color = '';
+              }, 1400);
+            });
+          });
+        }
+
+        render();
       })();
     </script>
   </body>

@@ -56,6 +56,44 @@ The audit covers:
 - **Technical issues** found in your code (missing meta, sitemap, robots, etc.)
 - **Declining pages** if you have 60+ days of GSC history
 
+## Installation
+
+Pick the option that fits your workflow.
+
+### Option 1: Run with `npx` (no install)
+
+```bash
+npx serpiq audit --site https://yoursite.com
+```
+
+`npx` will fetch the latest version each time. Best for one-off runs.
+
+### Option 2: Install globally
+
+```bash
+npm install -g serpiq
+serpiq audit --site https://yoursite.com
+```
+
+The `serpiq` command becomes available everywhere on your machine.
+
+### Option 3: Install in your project
+
+```bash
+npm install --save-dev serpiq
+npx serpiq audit --site https://yoursite.com
+```
+
+Pin the version in your `package.json`. Run via `npx` or wire into a npm script:
+
+```json
+{
+  "scripts": {
+    "audit": "serpiq audit --site https://yoursite.com"
+  }
+}
+```
+
 ## Quick start
 
 ```bash
@@ -68,6 +106,8 @@ npx serpiq init
 # 3. Run the audit
 npx serpiq audit --site https://yoursite.com
 ```
+
+> Don't have a Google Search Console site yet? Add `--skip-gsc` and serpIQ will run on codebase analysis and keyword research alone.
 
 ## Setup
 
