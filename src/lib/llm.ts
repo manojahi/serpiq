@@ -16,10 +16,14 @@ const OPENROUTER_HEADERS = {
   'X-Title': 'serpIQ',
 };
 
+export interface CompleteOptions {
+  jsonMode?: boolean;
+}
+
 export interface LLMClient {
   readonly provider: LLMProvider;
   readonly model: string;
-  complete(prompt: string, systemPrompt: string): Promise<string>;
+  complete(prompt: string, systemPrompt: string, options?: CompleteOptions): Promise<string>;
 }
 
 export const DEFAULT_MODELS: Record<LLMProvider, string> = {
@@ -40,10 +44,10 @@ class AnthropicClient implements LLMClient {
     this.client = new Anthropic({ apiKey });
   }
 
-  async complete(prompt: string, systemPrompt: string): Promise<string> {
+  async complete(prompt: string, systemPrompt: string, _options?: CompleteOptions): Promise<string> {
     const res = await this.client.messages.create({
       model: this.model,
-      max_tokens: 8192,
+      max_tokens: 16384,
       system: systemPrompt,
       messages: [{ role: 'user', content: prompt }],
     });
@@ -65,9 +69,11 @@ class OpenAIClient implements LLMClient {
     this.client = new OpenAI({ apiKey, baseURL, defaultHeaders });
   }
 
-  async complete(prompt: string, systemPrompt: string): Promise<string> {
+  async complete(prompt: string, systemPrompt: string, options?: CompleteOptions): Promise<string> {
     const res = await this.client.chat.completions.create({
       model: this.model,
+      max_tokens: 16384,
+      ...(options?.jsonMode ? { response_format: { type: 'json_object' as const } } : {}),
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: prompt },
@@ -87,7 +93,7 @@ class OllamaClient implements LLMClient {
     this.baseURL = (baseURL || 'http://localhost:11434').replace(/\/+$/, '');
   }
 
-  async complete(prompt: string, systemPrompt: string): Promise<string> {
+  async complete(prompt: string, systemPrompt: string, options?: CompleteOptions): Promise<string> {
     const res = await fetch(`${this.baseURL}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -96,6 +102,7 @@ class OllamaClient implements LLMClient {
         prompt,
         system: systemPrompt,
         stream: false,
+        ...(options?.jsonMode ? { format: 'json' } : {}),
       }),
     });
     if (!res.ok) {

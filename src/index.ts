@@ -1,10 +1,16 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import chalk from 'chalk';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { auditCommand } from './commands/audit.js';
 import { authCommand } from './commands/auth.js';
 import { initCommand } from './commands/init.js';
 import type { LLMProviderName } from './types.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8')) as { version: string };
 
 const VALID_PROVIDERS: LLMProviderName[] = ['anthropic', 'openai', 'openai-compatible', 'openrouter', 'ollama'];
 
@@ -13,7 +19,7 @@ const program = new Command();
 program
   .name('serpiq')
   .description('serpIQ - AI-powered SEO audit for any codebase')
-  .version('0.1.0');
+  .version(pkg.version);
 
 program
   .command('audit')

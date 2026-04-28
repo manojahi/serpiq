@@ -90,11 +90,29 @@ export async function auditCommand(opts: AuditOptions): Promise<void> {
     throw e;
   }
 
-  const step4 = ora('Generating audit report...').start();
+  let step4 = ora('Running strategic audit...').start();
   let audit;
   try {
-    audit = await analyseSEO(product, gsc, keywords, llm);
-    step4.succeed('Audit report generated');
+    audit = await analyseSEO(product, gsc, keywords, llm, {
+      onStrategicComplete: s => {
+        step4.succeed(
+          `Strategy ready: ${chalk.bold(s.quick_fixes.length)} quick fixes, ${chalk.bold(s.blog_brief_seeds.length)} blog seeds, ${chalk.bold(s.pseo_seeds.length)} pSEO seeds`
+        );
+        const total = s.blog_brief_seeds.length + s.pseo_seeds.length;
+        if (total > 0) {
+          step4 = ora(`Expanding ${total} briefs and pSEO templates in parallel...`).start();
+        }
+      },
+      onBriefComplete: (i, total, title) => {
+        step4.text = `Expanded brief ${i + 1}/${total}: ${title.slice(0, 50)}`;
+      },
+      onPseoComplete: (i, total, name) => {
+        step4.text = `Expanded pSEO ${i + 1}/${total}: ${name.slice(0, 50)}`;
+      },
+    });
+    step4.succeed(
+      `Audit complete: ${chalk.bold(audit.blog_briefs.length)} briefs and ${chalk.bold(audit.pseo_plan.length)} pSEO templates expanded`
+    );
   } catch (e) {
     step4.fail('Audit generation failed');
     throw e;
