@@ -13,7 +13,7 @@
 Bring your own LLM: **Anthropic**, **OpenAI**, **OpenRouter** (400+ models behind one key), any other **OpenAI-compatible** API (Groq, Together, Mistral, etc.), or a local **Ollama** model.
 
 ```bash
-npx serpiq audit --site https://yoursite.com
+npx serpiq audit --gsc-site sc-domain:yoursite.com
 ```
 
 [View on npm](https://www.npmjs.com/package/serpiq) · [GitHub](https://github.com/manojahi/serpiq)
@@ -63,7 +63,7 @@ Pick the option that fits your workflow.
 ### Option 1: Run with `npx` (no install)
 
 ```bash
-npx serpiq audit --site https://yoursite.com
+npx serpiq audit --gsc-site sc-domain:yoursite.com
 ```
 
 `npx` will fetch the latest version each time. Best for one-off runs.
@@ -72,7 +72,7 @@ npx serpiq audit --site https://yoursite.com
 
 ```bash
 npm install -g serpiq
-serpiq audit --site https://yoursite.com
+serpiq audit --gsc-site sc-domain:yoursite.com
 ```
 
 The `serpiq` command becomes available everywhere on your machine.
@@ -81,7 +81,7 @@ The `serpiq` command becomes available everywhere on your machine.
 
 ```bash
 npm install --save-dev serpiq
-npx serpiq audit --site https://yoursite.com
+npx serpiq audit --gsc-site sc-domain:yoursite.com
 ```
 
 Pin the version in your `package.json`. Run via `npx` or wire into a npm script:
@@ -89,7 +89,7 @@ Pin the version in your `package.json`. Run via `npx` or wire into a npm script:
 ```json
 {
   "scripts": {
-    "audit": "serpiq audit --site https://yoursite.com"
+    "audit": "serpiq audit --gsc-site sc-domain:yoursite.com"
   }
 }
 ```
@@ -104,7 +104,7 @@ npx serpiq auth
 npx serpiq init
 
 # 3. Run the audit
-npx serpiq audit --site https://yoursite.com
+npx serpiq audit --gsc-site sc-domain:yoursite.com
 ```
 
 > Don't have a Google Search Console site yet? Add `--skip-gsc` and serpIQ will run on codebase analysis and keyword research alone.
@@ -128,18 +128,18 @@ Default is `anthropic`. To switch, pass `--provider` once and it gets saved to `
 ```bash
 # Anthropic (default)
 export ANTHROPIC_API_KEY=sk-ant-...
-npx serpiq audit --site https://yoursite.com
+npx serpiq audit --gsc-site sc-domain:yoursite.com
 
 # OpenAI
 export OPENAI_API_KEY=sk-...
-npx serpiq audit --provider openai --site https://yoursite.com
+npx serpiq audit --provider openai --gsc-site sc-domain:yoursite.com
 
 # OpenRouter: one key for 400+ models
 export OPENROUTER_API_KEY=sk-or-...
 npx serpiq audit \
   --provider openrouter \
   --model openai/gpt-4o \
-  --site https://yoursite.com
+  --gsc-site sc-domain:yoursite.com
 
 # Groq (or any other OpenAI-compatible API)
 export OPENAI_API_KEY=gsk_...
@@ -147,11 +147,11 @@ npx serpiq audit \
   --provider openai-compatible \
   --base-url https://api.groq.com/openai/v1 \
   --model llama-3.3-70b-versatile \
-  --site https://yoursite.com
+  --gsc-site sc-domain:yoursite.com
 
 # Local Ollama: no API key needed
 ollama pull llama3
-npx serpiq audit --provider ollama --site https://yoursite.com
+npx serpiq audit --provider ollama --gsc-site sc-domain:yoursite.com
 ```
 
 If no API key is found for the selected provider, `serpiq` prompts you on first run and saves it (per-provider) to `~/.serpiq/config.json`. Ollama skips the prompt entirely.
@@ -192,7 +192,7 @@ serpiq audit [options]
 
 | Option              | Description                                                                              | Default        |
 | ------------------- | ---------------------------------------------------------------------------------------- | -------------- |
-| `--site <url>`      | GSC property URL (cached after first use)                                                |                |
+| `--gsc-site <prop>` | Google Search Console property (e.g. `sc-domain:example.com`). Cached after first use.   |                |
 | `--days <number>`   | GSC lookback period                                                                      | `90`           |
 | `--skip-gsc`        | Run without GSC (codebase analysis + keyword research only)                              | `false`        |
 | `--output <path>`   | Output directory                                                                         | `./.serpiq`    |
@@ -201,7 +201,7 @@ serpiq audit [options]
 | `--base-url <url>`  | Base URL for `openai-compatible` providers, or a remote Ollama instance                  |                |
 | `--api-key <key>`   | LLM API key for this run only (overrides env var and saved config; **not persisted**)    |                |
 
-The `--site` value can be either a domain property (`sc-domain:example.com`) or a URL prefix property (`https://example.com/`). `serpiq` auto-detects which one is verified in your account.
+The `--gsc-site` value can be either a domain property (`sc-domain:example.com`) or a URL prefix property (`https://example.com/`). `serpiq` auto-detects which one is verified in your account. The flag is named `--gsc-site` to make it clear this is a Google Search Console property reference, not a URL to crawl - serpIQ does not crawl your live site.
 
 `--provider` and `--model` are persisted to `~/.serpiq/config.json` once set, so subsequent runs don't need them.
 
@@ -215,15 +215,55 @@ Drop a `.serpiq.md` template in the current directory. Fill it in and commit it.
 
 ## How it works
 
-`serpiq` runs five steps:
+`serpiq` runs five steps. Each one is a single TypeScript file under `src/steps/`.
 
-1. **Understand the codebase.** Reads `README.md`, `package.json`, your landing page, sitemap, robots.txt, `.serpiq.md`, and the directory tree. Sends it to your LLM to produce a structured product summary.
-2. **Fetch GSC data.** Pulls 90 days of query and page data from Search Console, computes striking-distance keywords, low-CTR opportunities, and declining pages.
-3. **Keyword research.** Scrapes Google Autocomplete for every seed keyword and asks the LLM to expand into long-tails, "vs" comparisons, use-case keywords, and pSEO templates.
-4. **AI analysis.** Sends everything to the LLM for a prioritised audit with quick fixes, content improvements, blog briefs, pSEO plans, and technical issues.
-5. **Write outputs.** Generates the markdown audit, JSON dump, individual blog briefs, and pSEO plan.
+### 1. Understand the codebase
+The LLM reads your `README.md`, `package.json`, landing page HTML, sitemap, `robots.txt`, `.serpiq.md`, and the directory tree, then returns a structured product summary including initial keyword seeds and content gaps the codebase reveals.
 
-The LLM layer is a thin abstraction in `src/lib/llm.ts` with a single `complete(prompt, systemPrompt)` method, so swapping providers is a one-line change.
+### 2. Fetch GSC data + diagnose stage
+Pulls 90 days of query and page data from Search Console (configurable via `--days`). Then computes purely-deterministic signals from the raw data:
+
+- **Stage diagnosis**: classifies the site into one of six stages (`no_data`, `low_visibility`, `visibility_no_clicks`, `rank_improvement`, `has_traction`, `scaling`). Drives the entire downstream strategy.
+- **Adaptive thresholds**: striking-distance and low-CTR cutoffs scale with site size, so small sites don't get filtered out by big-site defaults.
+- **URL pattern detection**: groups your top pages by parent path to surface existing pSEO clusters (`/decline-codes/*`, `/alternatives/*`, etc.).
+- **Per-page query map**: for the top 40 pages, lists the top 5 queries each page is showing for. This is the input that drives smart title/meta rewrites.
+
+### 3. Keyword research
+Scrapes **Google Autocomplete** for every seed keyword (real Google data, not LLM hallucination), then asks the LLM to expand the seeds + GSC striking-distance keywords + autocomplete data into quick wins, blog opportunities, pSEO templates, and competitor gaps.
+
+### 4. AI analysis (split into focused calls)
+A single giant prompt would overwhelm small models. Instead:
+
+1. **Strategic call**: produces the executive summary, health score, top 3 actions, quick fixes, content improvements, internal links, keyword clusters, technical issues. Plus *seeds* for blog briefs and pSEO templates.
+2. **Per-brief expansion** (parallel): one focused LLM call per blog brief seed, producing meta tags, slug, 7-10 outline sections with word targets, FAQ, internal/external links, image suggestions, and schema markup.
+3. **Per-pSEO expansion** (parallel): one focused call per pSEO seed, producing meta templates, required sections with min-word counts, thin-content guards, internal-linking strategy, and an 8-12 step launch checklist.
+
+JSON mode is enabled for OpenAI-compatible providers and Ollama to enforce schema compliance.
+
+### 5. Write outputs
+Renders markdown for the main audit, every blog brief, and the pSEO plan. Each brief gets a universal SEO checklist appended (40+ items: meta tags, schema markup with copy-paste JSON-LD, performance, post-publish distribution). The pSEO plan gets a universal best-practices appendix (indexability, anti-thin-content rules, launch sequence, monitoring metrics).
+
+The LLM layer is a thin abstraction in `src/lib/llm.ts` with a single `complete(prompt, systemPrompt, options)` method, so swapping providers is a one-line change.
+
+## How keyword and gap detection works
+
+serpIQ uses six layers of signal, mostly deterministic. The LLM only synthesizes on top of real data.
+
+| Source                       | What it surfaces                                              | How                                       |
+| ---------------------------- | ------------------------------------------------------------- | ----------------------------------------- |
+| Codebase + landing page      | What your product *should* talk about; missing topics         | LLM-inferred from README, code, HTML      |
+| GSC striking-distance        | Queries you're *almost* ranking for (pos 5-30)                | Threshold-based, scales with site size    |
+| GSC high-impression-low-CTR  | SERP appearance issues (titles/metas to rewrite)              | Threshold-based, scales with site size    |
+| GSC pages-with-queries       | Title-vs-actual-query mismatches per page                     | Joins page data with query data           |
+| GSC URL pattern clustering   | Working pSEO clusters to expand (vs starting new ones)        | Groups top pages by parent path           |
+| Google Autocomplete          | Real-world long-tail variants for each seed                   | Scrapes `suggestqueries.google.com`       |
+| GSC declining pages          | Content rotting (last 30 vs prior 30 days)                    | Deterministic, requires `--days >= 60`    |
+| LLM synthesis                | Competitor gaps, keyword clusters, internal-link gaps         | LLM uses all of the above as context      |
+
+Two things serpIQ deliberately does not do:
+
+- **No third-party keyword volume API** (Ahrefs / SEMrush / DataForSEO). Volume estimates are paid and noisy. The philosophy is "use your real GSC data plus free Google signals."
+- **No live SERP scraping** of competitors. On the roadmap, but the current detection layers already give you actionable opportunities without it.
 
 ## Configuration files
 
@@ -265,3 +305,7 @@ node dist/index.js audit --skip-gsc   # local test
 ## License
 
 MIT
+
+---
+
+Built by [@manojahi](https://github.com/manojahi) · Follow [@manoj_ahi on X](https://x.com/manoj_ahi) for updates.

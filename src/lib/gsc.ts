@@ -212,7 +212,7 @@ export async function resolveSite(input: string): Promise<string> {
   const err = new Error(
     `Could not find GSC property "${input}".\n` +
       `Available properties:\n  ${sites.map(s => `- ${s}`).join('\n  ')}\n` +
-      `Pass one of these to --site.`
+      `Pass one of these to --gsc-site.`
   );
   throw err;
 }

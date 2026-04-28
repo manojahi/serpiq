@@ -61,7 +61,7 @@ export async function auditCommand(opts: AuditOptions): Promise<void> {
   if (opts.skipGsc) {
     console.log(chalk.yellow('⚠ Skipping GSC (--skip-gsc)'));
   } else if (!site) {
-    console.log(chalk.yellow('⚠ No --site provided; skipping GSC. Pass --site https://yoursite.com to include real performance data.'));
+    console.log(chalk.yellow('⚠ No --gsc-site provided; skipping GSC. Pass --gsc-site sc-domain:yoursite.com to include real performance data.'));
   } else {
     const step2 = ora(`Fetching GSC data for ${site}...`).start();
     try {

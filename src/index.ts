@@ -24,7 +24,8 @@ program
 program
   .command('audit')
   .description('Run a full AI-powered SEO audit on the current project')
-  .option('--site <url>', 'Google Search Console property URL (cached after first use)')
+  .option('--gsc-site <property>', 'Google Search Console property (e.g. sc-domain:example.com or https://example.com/). Cached after first use.')
+  .option('--site <property>', '[deprecated] alias for --gsc-site')
   .option('--days <number>', 'GSC lookback period in days', val => parseInt(val, 10), 90)
   .option('--skip-gsc', 'Skip Google Search Console data (codebase + keyword research only)', false)
   .option('--output <path>', 'Output directory', './.serpiq')
@@ -41,8 +42,11 @@ program
         }
         provider = opts.provider as LLMProviderName;
       }
+      if (opts.site && !opts.gscSite) {
+        console.warn(chalk.yellow('⚠ --site is deprecated. Use --gsc-site instead.'));
+      }
       await auditCommand({
-        site: opts.site,
+        site: opts.gscSite ?? opts.site,
         days: opts.days,
         skipGsc: opts.skipGsc,
         output: opts.output,

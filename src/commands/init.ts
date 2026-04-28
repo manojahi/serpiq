@@ -40,5 +40,5 @@ export async function initCommand(cwd: string): Promise<void> {
   }
   fs.writeFileSync(target, TEMPLATE);
   console.log(chalk.green('✔ Created .serpiq.md'));
-  console.log(chalk.dim('Fill it in and commit it. Then run: npx serpiq audit --site https://yoursite.com'));
+  console.log(chalk.dim('Fill it in and commit it. Then run: npx serpiq audit --gsc-site sc-domain:yoursite.com'));
 }

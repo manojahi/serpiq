@@ -12,8 +12,8 @@ export async function authCommand(): Promise<void> {
     }
     console.log(chalk.bold('\nAvailable GSC properties:'));
     for (const s of sites) console.log(`  - ${s}`);
-    console.log(chalk.dim('\nPass one to --site when running the audit, e.g.:'));
-    console.log(chalk.dim(`  npx serpiq audit --site ${sites[0]}`));
+    console.log(chalk.dim('\nPass one to --gsc-site when running the audit, e.g.:'));
+    console.log(chalk.dim(`  npx serpiq audit --gsc-site ${sites[0]}`));
   } catch (e) {
     console.error(chalk.red('Could not list properties:'), (e as Error).message);
   }

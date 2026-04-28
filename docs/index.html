@@ -796,6 +796,11 @@
       .install-cmd + .install-cmd {
         margin-top: 6px;
       }
+      .install-single {
+        margin-top: 28px;
+        padding: 18px 22px;
+        font-size: 14px;
+      }
       .install-cmd .mini-copy {
         position: absolute;
         top: 6px;
@@ -974,6 +979,86 @@
           grid-template-columns: 1fr;
         }
       }
+
+      /* ---------- Detection table ---------- */
+      .detection-table {
+        margin-top: 32px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .detection-row {
+        display: grid;
+        grid-template-columns: 130px 1fr 1.1fr;
+        gap: 16px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        font-size: 13.5px;
+        line-height: 1.55;
+        align-items: start;
+      }
+      .detection-row:last-child {
+        border-bottom: 0;
+      }
+      .detection-head {
+        background: var(--bg-code);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-faint);
+        font-weight: 700;
+      }
+      .detection-row em {
+        color: var(--accent);
+        font-style: normal;
+      }
+      .detection-row code {
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 12px;
+        color: var(--accent);
+      }
+      .src-tag {
+        display: inline-block;
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: var(--mono);
+      }
+      .src-code {
+        background: rgba(34, 211, 238, 0.1);
+        color: var(--accent);
+      }
+      .src-gsc {
+        background: rgba(74, 222, 128, 0.1);
+        color: var(--success);
+      }
+      .src-google {
+        background: rgba(251, 191, 36, 0.1);
+        color: var(--warn);
+      }
+      .src-llm {
+        background: rgba(168, 168, 200, 0.1);
+        color: var(--text-dim);
+      }
+      @media (max-width: 760px) {
+        .detection-row {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+        .detection-head {
+          display: none;
+        }
+        .detection-row > div:first-child {
+          margin-bottom: 4px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -986,6 +1071,7 @@
           <a href="#install-methods" class="ghost-link">Install</a>
           <a href="#builder" class="ghost-link">Build a command</a>
           <a href="#how" class="ghost-link">How it works</a>
+          <a href="#detection" class="ghost-link">Detection</a>
           <a href="https://github.com/manojahi/serpiq#readme" class="ghost-link" target="_blank" rel="noopener">Docs</a>
           <a
             href="https://github.com/manojahi/serpiq"
@@ -1050,57 +1136,18 @@
         </div>
       </section>
 
-      <!-- Install methods -->
+      <!-- Install -->
       <section id="install-methods">
         <div class="wrap">
           <p class="eyebrow">Install</p>
-          <h2>Three ways to run it.</h2>
+          <h2>One command.</h2>
           <p class="section-lede">
-            Pick whichever fits your workflow. All three run the exact same code.
+            Install once, run anywhere on your machine.
           </p>
 
-          <div class="install-grid">
-            <div class="install-card recommended">
-              <span class="badge">RECOMMENDED</span>
-              <h3>npx (zero install)</h3>
-              <p class="install-desc">
-                Run the latest version on demand. No global pollution, always up to date.
-              </p>
-              <div class="install-cmd">
-                <span class="prompt">$</span>npx serpiq audit --site https://yoursite.com
-                <button class="mini-copy" data-copy="npx serpiq audit --site https://yoursite.com">Copy</button>
-              </div>
-            </div>
-
-            <div class="install-card">
-              <h3>Global install</h3>
-              <p class="install-desc">
-                Get the <code style="color: var(--accent)">serpiq</code> command everywhere on your machine.
-              </p>
-              <div class="install-cmd">
-                <span class="prompt">$</span>npm install -g serpiq
-                <button class="mini-copy" data-copy="npm install -g serpiq">Copy</button>
-              </div>
-              <div class="install-cmd">
-                <span class="prompt">$</span>serpiq audit --site https://yoursite.com
-                <button class="mini-copy" data-copy="serpiq audit --site https://yoursite.com">Copy</button>
-              </div>
-            </div>
-
-            <div class="install-card">
-              <h3>Per-project</h3>
-              <p class="install-desc">
-                Pin the version in your repo's <code style="color: var(--accent)">package.json</code>.
-              </p>
-              <div class="install-cmd">
-                <span class="prompt">$</span>npm install --save-dev serpiq
-                <button class="mini-copy" data-copy="npm install --save-dev serpiq">Copy</button>
-              </div>
-              <div class="install-cmd">
-                <span class="prompt">$</span>npx serpiq audit --site https://yoursite.com
-                <button class="mini-copy" data-copy="npx serpiq audit --site https://yoursite.com">Copy</button>
-              </div>
-            </div>
+          <div class="install-cmd install-single">
+            <span class="prompt">$</span>npm install -g serpiq
+            <button class="mini-copy" data-copy="npm install -g serpiq">Copy</button>
           </div>
         </div>
       </section>
@@ -1202,7 +1249,8 @@
                 placeholder="sc-domain:yoursite.com  or  https://yoursite.com/"
               />
               <div class="builder-hint">
-                Use <code style="color: var(--accent)">sc-domain:yoursite.com</code> for Domain properties or
+                This is your verified GSC property identifier (not a URL to crawl). Use
+                <code style="color: var(--accent)">sc-domain:yoursite.com</code> for Domain properties or
                 the full URL for URL-prefix properties. Leave blank to skip GSC.
               </div>
             </div>
@@ -1261,40 +1309,122 @@
               <div class="step-num">01</div>
               <div class="step-title">Analyse codebase</div>
               <div class="step-desc">
-                Reads your README, package.json, and landing page, so the audit understands what
-                your product actually does, not just what your HTML says.
+                The LLM reads your README, package.json, landing page HTML, sitemap, robots.txt,
+                and directory tree. Returns a product summary plus initial keyword seeds and
+                content gaps the codebase reveals.
               </div>
             </div>
             <div class="step">
               <div class="step-num">02</div>
-              <div class="step-title">Fetch GSC data</div>
+              <div class="step-title">Fetch GSC + diagnose stage</div>
               <div class="step-desc">
-                Connects directly to your Google Search Console account. Real impressions, real
-                clicks, real positions. No estimated keyword volumes.
+                Pulls 90 days of real Search Console data, then computes deterministic signals:
+                site stage (no_data → scaling), striking-distance keywords, low-CTR pages,
+                URL pattern clusters, declining pages.
               </div>
             </div>
             <div class="step">
               <div class="step-num">03</div>
               <div class="step-title">Keyword research</div>
               <div class="step-desc">
-                Scrapes Google Autocomplete and expands seeds with the LLM.
+                Scrapes Google Autocomplete (real Google data, not LLM hallucinations) for every
+                seed keyword. Combined with GSC striking-distance keywords, the LLM expands into
+                quick wins, blog opportunities, pSEO templates, and competitor gaps.
               </div>
             </div>
             <div class="step">
               <div class="step-num">04</div>
-              <div class="step-title">AI audit</div>
+              <div class="step-title">AI audit (multi-call)</div>
               <div class="step-desc">
-                Combines everything into a prioritised plan with quick fixes.
+                One strategic call produces the executive summary, score, quick fixes, and seeds.
+                Then per-brief and per-pSEO expansion calls run in parallel, each with a focused
+                prompt that demands production-ready specs.
               </div>
             </div>
             <div class="step">
               <div class="step-num">05</div>
               <div class="step-title">Output files</div>
               <div class="step-desc">
-                Writes markdown, JSON, blog briefs, and a pSEO plan to disk.
+                Renders the main audit, individual blog briefs (each with meta tags, JSON-LD,
+                FAQ, internal links, image suggestions), and the pSEO plan with launch checklists
+                and universal SEO best-practice appendices.
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- How keyword and gap detection works -->
+      <section id="detection">
+        <div class="wrap">
+          <p class="eyebrow">How keyword + gap detection works</p>
+          <h2>Six layers of signal. Mostly deterministic.</h2>
+          <p class="section-lede">
+            The LLM only synthesises on top of real data. Every keyword and gap traces back to a
+            specific source you can verify yourself.
+          </p>
+
+          <div class="detection-table">
+            <div class="detection-row detection-head">
+              <div>Source</div>
+              <div>What it surfaces</div>
+              <div>How</div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-code">codebase</span></div>
+              <div>What your product <em>should</em> talk about; missing topics and pages</div>
+              <div>LLM-inferred from README, code, HTML</div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-gsc">GSC</span></div>
+              <div>Striking-distance keywords (you're <em>almost</em> ranking, pos 5-30)</div>
+              <div>Threshold-based, scales with site size</div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-gsc">GSC</span></div>
+              <div>High-impression-low-CTR (title/meta rewrite candidates)</div>
+              <div>Threshold-based, scales with site size</div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-gsc">GSC</span></div>
+              <div>Title-vs-actual-query mismatches per page</div>
+              <div>Joins page data with query data, top 5 per page</div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-gsc">GSC</span></div>
+              <div>Working pSEO clusters to expand (not start new)</div>
+              <div>Groups top pages by parent URL path</div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-google">Google</span></div>
+              <div>Real-world long-tail variants for each seed</div>
+              <div>Scrapes <code>suggestqueries.google.com</code></div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-gsc">GSC</span></div>
+              <div>Content rotting (declining pages, last 30 vs prior 30 days)</div>
+              <div>Deterministic, requires <code>--days &gt;= 60</code></div>
+            </div>
+
+            <div class="detection-row">
+              <div><span class="src-tag src-llm">LLM</span></div>
+              <div>Competitor gaps, keyword clusters, internal-link gaps</div>
+              <div>Synthesises on top of all the layers above</div>
+            </div>
+          </div>
+
+          <p class="section-lede" style="margin-top: 32px;">
+            Two things serpIQ deliberately <em>does not</em> do: no third-party keyword volume APIs
+            (Ahrefs / SEMrush) and no live SERP scraping of competitors. The philosophy is "use
+            your real GSC data plus free Google signals."
+          </p>
         </div>
       </section>
 
@@ -1644,7 +1774,10 @@
           <a href="https://github.com/manojahi/serpiq" target="_blank" rel="noopener">github.com/manojahi/serpiq</a>
         </div>
         <div>
-          built by <a href="https://github.com/manojahi" target="_blank" rel="noopener">@manojahi</a>
+          built by
+          <a href="https://github.com/manojahi" target="_blank" rel="noopener">@manojahi</a>
+          ·
+          <a href="https://x.com/manoj_ahi" target="_blank" rel="noopener">@manoj_ahi on X</a>
         </div>
       </div>
     </footer>
@@ -1722,7 +1855,7 @@
         // Demo script: an array of "actions" the player runs sequentially.
         // type: 'type' (typewriter), 'spinner' (rotating glyph for ms), 'line' (instant), 'pause'.
         var DEMO = [
-          { type: 'type', text: 'npx serpiq audit --site sc-domain:deadsubs.com', speed: 28 },
+          { type: 'type', text: 'npx serpiq audit --gsc-site sc-domain:deadsubs.com', speed: 28 },
           { type: 'pause', ms: 350 },
           { type: 'newline' },
           { type: 'newline' },
@@ -1933,7 +2066,7 @@
             parts.push('--base-url ' + baseUrlInput);
           }
           if (siteInput) {
-            parts.push('--site ' + siteInput);
+            parts.push('--gsc-site ' + siteInput);
           } else {
             parts.push('--skip-gsc');
           }
