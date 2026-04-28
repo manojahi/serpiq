@@ -1,6 +1,6 @@
 # serpIQ
 
-> AI-powered SEO audit for any codebase. Free. Open source. No dashboards.
+> The only SEO audit tool that reads your codebase first, then pulls your real Google Search Console data.
 
 `serpiq` is a zero-install CLI that reads your project, pulls real Google Search Console data, does keyword research, and outputs an actionable SEO plan, including ready-to-implement blog briefs and pSEO page specs.
 
@@ -11,6 +11,18 @@ npx serpiq audit --site https://yoursite.com
 ```
 
 [View on npm](https://www.npmjs.com/package/serpiq) · [GitHub](https://github.com/manojahi/serpiq)
+
+## Why serpIQ
+
+Every other SEO tool audits your live website. serpIQ is different in two ways.
+
+**1. It reads your codebase first.**
+Before touching any SEO data, serpIQ reads your README, package.json, and landing page to understand what your product actually does. The audit is product-aware, not just a generic HTML crawl.
+
+**2. It uses your real GSC data.**
+No third-party keyword estimates. serpIQ connects directly to your Google Search Console account and pulls your actual impressions, clicks, and positions for the last 90 days. You see the truth about your site, not a vendor's model of it.
+
+Everything else follows from these two things.
 
 ## What you get
 
