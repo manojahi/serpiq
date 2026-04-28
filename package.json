@@ -30,7 +30,7 @@
   },
   "type": "module",
   "bin": {
-    "serpiq": "./dist/index.js"
+    "serpiq": "dist/index.js"
   },
   "files": [
     "dist",

@@ -471,6 +471,207 @@
         color: var(--text);
       }
 
+      /* ---------- Interactive demo ---------- */
+      .demo-controls {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .demo-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: var(--accent);
+        color: #001014;
+        border: 1px solid var(--accent);
+        border-radius: var(--radius);
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 120ms ease;
+      }
+      .demo-btn:hover {
+        background: #67e8f9;
+      }
+      .demo-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .demo-btn.ghost {
+        background: transparent;
+        color: var(--text-dim);
+        border-color: var(--border-strong);
+      }
+      .demo-btn.ghost:hover {
+        color: var(--text);
+        border-color: var(--accent);
+        background: transparent;
+      }
+      .demo-hint {
+        color: var(--text-faint);
+        font-size: 12px;
+      }
+      .demo-terminal {
+        min-height: 480px;
+      }
+      .demo-terminal pre {
+        min-height: 440px;
+      }
+      .cursor-blink {
+        display: inline-block;
+        width: 8px;
+        height: 14px;
+        background: var(--accent);
+        vertical-align: text-bottom;
+        margin-left: 2px;
+        animation: blink 1s steps(1) infinite;
+      }
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
+      .spin {
+        color: var(--accent);
+      }
+
+      /* ---------- Output preview tabs ---------- */
+      .tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+      }
+      .tab {
+        padding: 10px 16px;
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        font-family: var(--mono);
+        font-size: 13px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: color 120ms ease, border-color 120ms ease;
+      }
+      .tab:hover {
+        color: var(--text);
+      }
+      .tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+      .file-preview {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .file-preview-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-code);
+      }
+      .file-preview-path {
+        font-size: 12px;
+        color: var(--accent);
+      }
+      .file-preview-tag {
+        font-size: 11px;
+        color: var(--text-faint);
+        padding: 2px 8px;
+        background: var(--bg);
+        border-radius: 4px;
+        border: 1px solid var(--border);
+      }
+      .file-preview-body {
+        padding: 28px 32px;
+        font-family: var(--mono);
+        font-size: 13.5px;
+        line-height: 1.65;
+        color: var(--text);
+        max-height: 540px;
+        overflow-y: auto;
+      }
+      .file-preview-body h1,
+      .file-preview-body h2,
+      .file-preview-body h3 {
+        font-family: var(--mono);
+        margin: 0 0 12px;
+        letter-spacing: -0.01em;
+      }
+      .file-preview-body h1 { font-size: 18px; }
+      .file-preview-body h2 { font-size: 15px; margin-top: 24px; color: var(--text); }
+      .file-preview-body h3 { font-size: 14px; margin-top: 18px; color: var(--text-dim); }
+      .file-preview-body p { margin: 0 0 12px; color: var(--text-dim); font-size: 13px; }
+      .file-preview-body strong { color: var(--text); }
+      .file-preview-body .meta {
+        font-size: 12px;
+        color: var(--text-faint);
+        margin-bottom: 16px;
+      }
+      .file-preview-body table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin: 0 0 16px;
+      }
+      .file-preview-body th,
+      .file-preview-body td {
+        text-align: left;
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-dim);
+      }
+      .file-preview-body th {
+        color: var(--text-faint);
+        font-weight: 500;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .file-preview-body td.acc { color: var(--accent); }
+      .file-preview-body td .pri-high { color: var(--warn); font-weight: 600; }
+      .file-preview-body td .pri-med { color: var(--text); }
+      .file-preview-body td .pri-low { color: var(--text-faint); }
+      .file-preview-body ol,
+      .file-preview-body ul {
+        margin: 0 0 16px;
+        padding-left: 22px;
+        color: var(--text-dim);
+        font-size: 13px;
+      }
+      .file-preview-body ol li,
+      .file-preview-body ul li {
+        padding: 2px 0;
+      }
+      .file-preview-body code {
+        background: var(--bg-code);
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+        color: var(--accent);
+      }
+      .file-preview-body .score {
+        display: inline-block;
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--accent);
+        margin: 4px 0 16px;
+      }
+
       /* ---------- Footer ---------- */
       footer {
         padding: 40px 0 64px;
@@ -761,43 +962,240 @@
         </div>
       </section>
 
-      <!-- Sample output -->
-      <section id="docs">
+      <!-- Live demo -->
+      <section id="demo">
         <div class="wrap">
-          <p class="eyebrow">Sample run</p>
-          <h2>What it looks like.</h2>
+          <p class="eyebrow">Live demo</p>
+          <h2>Watch it run. No install needed.</h2>
           <p class="section-lede">
-            A real run on a small marketing site. Total time: about 60 seconds.
+            Click play. This is exactly what you'll see when you run the real command on your own
+            site. Total time on a real site: about 60 seconds.
           </p>
 
-          <div class="terminal">
+          <div class="demo-controls">
+            <button class="demo-btn" id="demoPlay">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              Play demo
+            </button>
+            <button class="demo-btn ghost" id="demoReset" disabled>Reset</button>
+            <span class="demo-hint" id="demoHint">~10 seconds</span>
+          </div>
+
+          <div class="terminal demo-terminal">
             <div class="terminal-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
               <span class="label">~/code/deadsubs</span>
             </div>
-            <pre><span class="dim">$</span> <span class="acc">npx serpiq audit --site sc-domain:deadsubs.com</span>
+            <pre id="demoOutput"><span class="dim">$ </span><span class="cursor-blink"></span></pre>
+          </div>
+        </div>
+      </section>
 
-<span class="acc bold">serpIQ</span> <span class="dim">- AI-powered SEO audit</span>
+      <!-- Output preview -->
+      <section id="docs">
+        <div class="wrap">
+          <p class="eyebrow">Outputs</p>
+          <h2>The files it writes.</h2>
+          <p class="section-lede">
+            Click between the tabs below to see real samples of what serpIQ generates. Every file
+            is plain markdown or JSON. Commit them, share them, or paste them into Cursor.
+          </p>
 
-<span class="dim">LLM: anthropic (claude-sonnet-4-5)</span>
-<span class="ok">✔</span> Codebase analysed: <span class="bold">deadsubs</span> (Reddit dead-subreddit finder)
-<span class="ok">✔</span> GSC data fetched: <span class="bold">847</span> queries, <span class="bold">43</span> pages, last 90 days
-<span class="ok">✔</span> Keyword research complete: <span class="bold">124</span> opportunities identified
-<span class="ok">✔</span> Audit report generated
-<span class="ok">✔</span> Outputs written to <span class="acc">.serpiq</span>
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="audit" role="tab" aria-selected="true">
+              audit-2026-04-28.md
+            </button>
+            <button class="tab" data-tab="brief" role="tab" aria-selected="false">
+              blog-briefs/brief-best-reddit-finder.md
+            </button>
+            <button class="tab" data-tab="pseo" role="tab" aria-selected="false">
+              pseo/pseo-plan.md
+            </button>
+          </div>
 
-<span class="dim">╭─────────────────────────────────────────────╮</span>
-<span class="dim">│</span>                                             <span class="dim">│</span>
-<span class="dim">│</span>  <span class="acc bold">serpIQ Audit Complete</span>                      <span class="dim">│</span>
-<span class="dim">│</span>  Health Score: <span class="bold">62/100</span>                       <span class="dim">│</span>
-<span class="dim">│</span>                                             <span class="dim">│</span>
-<span class="dim">│</span>  <span class="bold">12</span> quick fixes identified                  <span class="dim">│</span>
-<span class="dim">│</span>  <span class="bold">8</span> blog briefs ready                        <span class="dim">│</span>
-<span class="dim">│</span>  <span class="bold">3</span> pSEO templates (est. 450 pages)          <span class="dim">│</span>
-<span class="dim">│</span>                                             <span class="dim">│</span>
-<span class="dim">│</span>  Full report: <span class="acc">.serpiq/audit-2026-04-28.md</span>  <span class="dim">│</span>
-<span class="dim">│</span>                                             <span class="dim">│</span>
-<span class="dim">╰─────────────────────────────────────────────╯</span></pre>
+          <div class="tab-panel active" data-panel="audit">
+            <div class="file-preview">
+              <div class="file-preview-bar">
+                <span class="file-preview-path">.serpiq/audit-2026-04-28.md</span>
+                <span class="file-preview-tag">markdown</span>
+              </div>
+              <div class="file-preview-body">
+                <h1>SEO Audit: deadsubs</h1>
+                <p class="meta">Generated: 2026-04-28 by serpIQ</p>
+
+                <h2>Health Score</h2>
+                <div class="score">62 / 100</div>
+
+                <p>
+                  <strong>Product:</strong> A free tool for finding inactive subreddits that haven't
+                  posted in 6+ months.
+                </p>
+                <p>
+                  <strong>GSC Property:</strong>
+                  <code>sc-domain:deadsubs.com</code> (2026-01-28 to 2026-04-28)
+                </p>
+                <p>
+                  <strong>Performance:</strong> 1,247 clicks · 84,302 impressions · CTR 1.48% · avg
+                  pos 18.4
+                </p>
+
+                <h2>Executive Summary</h2>
+                <p>
+                  deadsubs has solid topical authority around niche Reddit discovery queries but is
+                  losing easy wins on title tag optimisation. 12 striking-distance keywords sit in
+                  positions 8-12 with high intent. Three pSEO templates could 10x organic surface
+                  area within a week of implementation.
+                </p>
+
+                <h2>Quick Fixes</h2>
+                <table>
+                  <thead>
+                    <tr><th>Priority</th><th>Page</th><th>Issue</th><th>Fix</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="pri-high">high</span></td>
+                      <td>/</td>
+                      <td>Generic title</td>
+                      <td>"Find Dead Subreddits | deadsubs"</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pri-high">high</span></td>
+                      <td>/about</td>
+                      <td>Missing meta description</td>
+                      <td>Add 155-char description with primary keyword</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pri-med">medium</span></td>
+                      <td>/category/gaming</td>
+                      <td>Thin content (180 words)</td>
+                      <td>Expand to 600+ words with examples</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pri-low">low</span></td>
+                      <td>/</td>
+                      <td>No structured data</td>
+                      <td>Add WebApplication schema</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h2>Striking-Distance Keywords (positions 8-20)</h2>
+                <table>
+                  <thead>
+                    <tr><th>Keyword</th><th>Position</th><th>Impressions</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>dead subreddits</td><td>8.2</td><td>4,210</td></tr>
+                    <tr><td>find inactive subreddit</td><td>11.4</td><td>1,890</td></tr>
+                    <tr><td>abandoned subreddits list</td><td>14.7</td><td>1,103</td></tr>
+                    <tr><td>request subreddit reddit</td><td>9.8</td><td>867</td></tr>
+                  </tbody>
+                </table>
+
+                <h2>Blog Content Plan</h2>
+                <p>
+                  8 blog posts identified. See <code>./blog-briefs/</code> for full briefs.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="brief">
+            <div class="file-preview">
+              <div class="file-preview-bar">
+                <span class="file-preview-path">.serpiq/blog-briefs/brief-best-reddit-finder.md</span>
+                <span class="file-preview-tag">markdown</span>
+              </div>
+              <div class="file-preview-body">
+                <h1>How to Find Dead Subreddits in 2026: A Complete Guide</h1>
+                <p>
+                  <strong>Target Keyword:</strong> how to find dead subreddits<br />
+                  <strong>Search Intent:</strong> Informational, with transactional tail<br />
+                  <strong>Estimated Length:</strong> 1,800 words<br />
+                  <strong>Priority:</strong> <span class="pri-high">high</span>
+                </p>
+
+                <h2>Why this brief</h2>
+                <p>
+                  Currently ranks position 11.4 for "find inactive subreddit" with 1,890
+                  impressions. A focused long-form post will move this into the top 5 and pull in
+                  20+ related long-tails.
+                </p>
+
+                <h2>Outline</h2>
+                <ol>
+                  <li>What counts as a "dead" subreddit (definition + criteria)</li>
+                  <li>Why people look for them (4 use cases: requesting, archiving, reviving, research)</li>
+                  <li>Method 1: Manual checking with Reddit's UI (with screenshots)</li>
+                  <li>Method 2: Using deadsubs.com (60 seconds, link to tool)</li>
+                  <li>Method 3: Reddit API + Python script (for the technical reader)</li>
+                  <li>What to do once you find one (request flow walkthrough)</li>
+                  <li>Common pitfalls (auto-banned subs, NSFW handling)</li>
+                  <li>FAQ (5 questions targeting People Also Ask)</li>
+                </ol>
+
+                <h2>Internal links</h2>
+                <ul>
+                  <li><code>/category/gaming</code> as an example category</li>
+                  <li><code>/about</code> for tool credibility</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="pseo">
+            <div class="file-preview">
+              <div class="file-preview-bar">
+                <span class="file-preview-path">.serpiq/pseo/pseo-plan.md</span>
+                <span class="file-preview-tag">markdown</span>
+              </div>
+              <div class="file-preview-body">
+                <h1>pSEO Implementation Plan: deadsubs</h1>
+
+                <h2>Template 1: Dead subreddits by category</h2>
+                <p>
+                  <strong>URL Pattern:</strong> <code>/dead-subreddits-in-{category}</code><br />
+                  <strong>Target Keyword Template:</strong> "dead subreddits in {category}"<br />
+                  <strong>Estimated Pages:</strong> 120<br />
+                  <strong>Data Source:</strong> existing <code>categories</code> table joined with
+                  <code>subreddits</code> filtered by inactivity
+                </p>
+                <p><strong>Example pages:</strong></p>
+                <ul>
+                  <li><code>/dead-subreddits-in-gaming</code></li>
+                  <li><code>/dead-subreddits-in-finance</code></li>
+                  <li><code>/dead-subreddits-in-cooking</code></li>
+                </ul>
+                <p><strong>Implementation notes:</strong></p>
+                <p>
+                  Each page needs: an H1 with the category name, a counter ("248 dead subreddits in
+                  gaming"), a sortable table, and 200-300 words of unique intro text auto-generated
+                  from the category metadata. Unique intro text is critical to avoid thin-content
+                  filtering.
+                </p>
+
+                <h2>Template 2: Subreddit alternatives</h2>
+                <p>
+                  <strong>URL Pattern:</strong> <code>/{subreddit}-alternatives</code><br />
+                  <strong>Target Keyword Template:</strong> "r/{subreddit} alternatives"<br />
+                  <strong>Estimated Pages:</strong> 280<br />
+                  <strong>Data Source:</strong> top 300 dead subreddits, with similarity matched
+                  against active subs by topic embedding
+                </p>
+
+                <h2>Template 3: Inactivity vs activity comparisons</h2>
+                <p>
+                  <strong>URL Pattern:</strong> <code>/{subreddit-a}-vs-{subreddit-b}</code><br />
+                  <strong>Target Keyword Template:</strong> "r/{a} vs r/{b}"<br />
+                  <strong>Estimated Pages:</strong> 50<br />
+                  <strong>Data Source:</strong> hand-curated list of high-impression "vs" queries
+                  from GSC
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -817,6 +1215,7 @@
 
     <script>
       (function () {
+        // ---------- Copy install command ----------
         var btn = document.getElementById('copyBtn');
         var label = btn ? btn.querySelector('.copy-label') : null;
         var originalLabel = label ? label.textContent : 'Copy';
@@ -834,7 +1233,6 @@
                 if (label) label.textContent = originalLabel;
               }, 1600);
             };
-
             if (navigator.clipboard && navigator.clipboard.writeText) {
               navigator.clipboard.writeText(text).then(done).catch(function () {
                 fallbackCopy(text);
@@ -855,11 +1253,143 @@
           ta.style.left = '-9999px';
           document.body.appendChild(ta);
           ta.select();
-          try {
-            document.execCommand('copy');
-          } catch (e) {}
+          try { document.execCommand('copy'); } catch (e) {}
           document.body.removeChild(ta);
         }
+
+        // ---------- Output preview tabs ----------
+        var tabs = document.querySelectorAll('.tab');
+        var panels = document.querySelectorAll('.tab-panel');
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            var name = tab.getAttribute('data-tab');
+            tabs.forEach(function (t) {
+              var active = t === tab;
+              t.classList.toggle('active', active);
+              t.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            panels.forEach(function (p) {
+              p.classList.toggle('active', p.getAttribute('data-panel') === name);
+            });
+          });
+        });
+
+        // ---------- Animated terminal demo ----------
+        var output = document.getElementById('demoOutput');
+        var playBtn = document.getElementById('demoPlay');
+        var resetBtn = document.getElementById('demoReset');
+        var hint = document.getElementById('demoHint');
+        var initialHint = hint ? hint.textContent : '';
+        var aborted = false;
+        var running = false;
+
+        // Demo script: an array of "actions" the player runs sequentially.
+        // type: 'type' (typewriter), 'spinner' (rotating glyph for ms), 'line' (instant), 'pause'.
+        var DEMO = [
+          { type: 'type', text: 'npx serpiq audit --site sc-domain:deadsubs.com', speed: 28 },
+          { type: 'pause', ms: 350 },
+          { type: 'newline' },
+          { type: 'newline' },
+          { type: 'line', html: '<span class="acc bold">serpIQ</span> <span class="dim">- AI-powered SEO audit</span>' },
+          { type: 'newline' },
+          { type: 'line', html: '<span class="dim">LLM: anthropic (claude-sonnet-4-5)</span>' },
+          { type: 'spinner', label: 'Analysing codebase...', ms: 1600, done: '<span class="ok">✔</span> Codebase analysed: <span class="bold">deadsubs</span> (Reddit dead-subreddit finder)' },
+          { type: 'spinner', label: 'Fetching GSC data for sc-domain:deadsubs.com...', ms: 1800, done: '<span class="ok">✔</span> GSC data fetched: <span class="bold">847</span> queries, <span class="bold">43</span> pages, last 90 days' },
+          { type: 'spinner', label: 'Researching keywords...', ms: 2200, done: '<span class="ok">✔</span> Keyword research complete: <span class="bold">124</span> opportunities identified' },
+          { type: 'spinner', label: 'Generating audit report...', ms: 2800, done: '<span class="ok">✔</span> Audit report generated' },
+          { type: 'spinner', label: 'Writing outputs...', ms: 600, done: '<span class="ok">✔</span> Outputs written to <span class="acc">.serpiq</span>' },
+          { type: 'newline' },
+          { type: 'line', html: '<span class="dim">╭─────────────────────────────────────────────╮</span>' },
+          { type: 'line', html: '<span class="dim">│</span>                                             <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>  <span class="acc bold">serpIQ Audit Complete</span>                      <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>  Health Score: <span class="bold">62/100</span>                       <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>                                             <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>  <span class="bold">12</span> quick fixes identified                  <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>  <span class="bold">8</span> blog briefs ready                        <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>  <span class="bold">3</span> pSEO templates (est. 450 pages)          <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>                                             <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>  Full report: <span class="acc">.serpiq/audit-2026-04-28.md</span>  <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">│</span>                                             <span class="dim">│</span>' },
+          { type: 'line', html: '<span class="dim">╰─────────────────────────────────────────────╯</span>' },
+        ];
+
+        var SPIN_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+
+        function resetDemo() {
+          aborted = true;
+          running = false;
+          if (output) output.innerHTML = '<span class="dim">$ </span><span class="cursor-blink"></span>';
+          if (playBtn) playBtn.disabled = false;
+          if (resetBtn) resetBtn.disabled = true;
+          if (hint) hint.textContent = initialHint;
+        }
+
+        function sleep(ms) {
+          return new Promise(function (r) { setTimeout(r, ms); });
+        }
+
+        function setOutput(html) {
+          if (!output) return;
+          output.innerHTML = html;
+        }
+
+        async function runDemo() {
+          if (running || !output) return;
+          running = true;
+          aborted = false;
+          if (playBtn) playBtn.disabled = true;
+          if (resetBtn) resetBtn.disabled = false;
+          if (hint) hint.textContent = 'Running...';
+
+          var buffer = '<span class="dim">$ </span>';
+          setOutput(buffer + '<span class="cursor-blink"></span>');
+
+          for (var i = 0; i < DEMO.length; i++) {
+            if (aborted) return;
+            var step = DEMO[i];
+
+            if (step.type === 'type') {
+              for (var c = 0; c < step.text.length; c++) {
+                if (aborted) return;
+                buffer += '<span class="acc">' + escape(step.text.charAt(c)) + '</span>';
+                setOutput(buffer + '<span class="cursor-blink"></span>');
+                await sleep(step.speed || 30);
+              }
+            } else if (step.type === 'newline') {
+              buffer += '\n';
+              setOutput(buffer + '<span class="cursor-blink"></span>');
+            } else if (step.type === 'line') {
+              buffer += step.html + '\n';
+              setOutput(buffer + '<span class="cursor-blink"></span>');
+              await sleep(60);
+            } else if (step.type === 'pause') {
+              await sleep(step.ms);
+            } else if (step.type === 'spinner') {
+              var start = Date.now();
+              var frame = 0;
+              while (Date.now() - start < step.ms) {
+                if (aborted) return;
+                var glyph = SPIN_FRAMES[frame % SPIN_FRAMES.length];
+                setOutput(buffer + '<span class="spin">' + glyph + '</span> ' + escape(step.label));
+                frame++;
+                await sleep(80);
+              }
+              buffer += step.done + '\n';
+              setOutput(buffer + '<span class="cursor-blink"></span>');
+            }
+          }
+
+          running = false;
+          if (hint) hint.textContent = 'Done. Try the real thing: npx serpiq audit';
+          if (playBtn) playBtn.disabled = false;
+        }
+
+        function escape(s) {
+          return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        if (playBtn) playBtn.addEventListener('click', runDemo);
+        if (resetBtn) resetBtn.addEventListener('click', resetDemo);
       })();
     </script>
   </body>

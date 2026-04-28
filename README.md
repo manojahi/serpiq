@@ -1,5 +1,11 @@
 # serpIQ
 
+[![npm version](https://img.shields.io/npm/v/serpiq?style=flat-square&color=22d3ee&label=npm)](https://www.npmjs.com/package/serpiq)
+[![npm downloads](https://img.shields.io/npm/dm/serpiq?style=flat-square&color=22d3ee)](https://www.npmjs.com/package/serpiq)
+[![License: MIT](https://img.shields.io/npm/l/serpiq?style=flat-square&color=22d3ee)](https://github.com/manojahi/serpiq/blob/main/LICENSE)
+[![Node](https://img.shields.io/node/v/serpiq?style=flat-square&color=22d3ee)](https://nodejs.org)
+[![GitHub stars](https://img.shields.io/github/stars/manojahi/serpiq?style=flat-square&color=22d3ee)](https://github.com/manojahi/serpiq)
+
 > The only SEO audit tool that reads your codebase first, then pulls your real Google Search Console data.
 
 `serpiq` is a zero-install CLI that reads your project, pulls real Google Search Console data, does keyword research, and outputs an actionable SEO plan, including ready-to-implement blog briefs and pSEO page specs.
