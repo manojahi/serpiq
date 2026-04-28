@@ -545,11 +545,12 @@
         </a>
         <div class="nav-actions">
           <a href="#how" class="ghost-link">How it works</a>
-          <a href="#docs" class="ghost-link">Docs</a>
+          <a href="https://github.com/manojahi/serpiq#readme" class="ghost-link" target="_blank" rel="noopener">Docs</a>
           <a
-            href="#"
+            href="https://github.com/manojahi/serpiq"
             class="gh-star"
-            data-gh-link
+            target="_blank"
+            rel="noopener"
             aria-label="Star serpiq on GitHub"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -589,7 +590,7 @@
           </div>
 
           <div class="ctas">
-            <a href="#" class="btn primary" data-gh-link>
+            <a href="https://github.com/manojahi/serpiq" class="btn primary" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
                   d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2.2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2.9-.3 1.9-.4 2.9-.4s2 .1 2.9.4c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"
@@ -597,7 +598,7 @@
               </svg>
               View on GitHub
             </a>
-            <a href="#docs" class="btn">
+            <a href="https://github.com/manojahi/serpiq#readme" class="btn" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4V4z"></path>
                 <path d="M4 16a4 4 0 0 1 4-4h12"></path>
@@ -781,7 +782,8 @@
     <footer>
       <div class="wrap">
         <div>
-          MIT licensed. <a href="#" data-gh-link>github.com/manojahi/serpiq</a>
+          MIT licensed.
+          <a href="https://github.com/manojahi/serpiq" target="_blank" rel="noopener">github.com/manojahi/serpiq</a>
         </div>
         <div>
           built by <a href="https://github.com/manojahi" target="_blank" rel="noopener">@manojahi</a>
@@ -791,11 +793,6 @@
 
     <script>
       (function () {
-        var GH_URL = '#';
-        document.querySelectorAll('[data-gh-link]').forEach(function (el) {
-          el.setAttribute('href', GH_URL);
-        });
-
         var btn = document.getElementById('copyBtn');
         var label = btn ? btn.querySelector('.copy-label') : null;
         var originalLabel = label ? label.textContent : 'Copy';
