@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>serpiq - AI-powered SEO audits for developers</title>
+    <meta
+      name="description"
+      content="Open-source CLI that runs an AI-powered SEO audit inside any codebase. Pulls Google Search Console data, does keyword research, and outputs blog briefs and pSEO page specs."
+    />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:title" content="serpiq - AI-powered SEO audits for developers" />
+    <meta
+      property="og:description"
+      content="npx serpiq audit. Open-source CLI that audits SEO from your codebase + Google Search Console."
+    />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #0a0a0c;
+        --bg-elevated: #111114;
+        --bg-code: #0d0d10;
+        --border: #1f1f25;
+        --border-strong: #2a2a32;
+        --text: #ececef;
+        --text-dim: #8a8a93;
+        --text-faint: #555560;
+        --accent: #22d3ee;
+        --accent-dim: #0891b2;
+        --success: #4ade80;
+        --warn: #fbbf24;
+        --max: 1080px;
+        --radius: 8px;
+        --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* ---------- Nav ---------- */
+      nav {
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: rgba(10, 10, 12, 0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 50;
+      }
+      nav .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+      }
+      .logo {
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: -0.01em;
+        color: var(--text);
+      }
+      .logo:hover {
+        text-decoration: none;
+      }
+      .logo .prompt {
+        color: var(--accent);
+        margin-right: 6px;
+      }
+      .logo .iq {
+        color: var(--accent);
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .ghost-link {
+        color: var(--text-dim);
+        font-size: 14px;
+      }
+      .ghost-link:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .gh-star {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-size: 13px;
+        background: var(--bg-elevated);
+        transition: border-color 120ms ease, color 120ms ease;
+      }
+      .gh-star:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        text-decoration: none;
+      }
+      .gh-star svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* ---------- Sections ---------- */
+      section {
+        padding: 96px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      section:last-of-type {
+        border-bottom: none;
+      }
+      .eyebrow {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--accent);
+        margin: 0 0 16px;
+        font-weight: 500;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        letter-spacing: -0.02em;
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+      .section-lede {
+        color: var(--text-dim);
+        max-width: 60ch;
+        margin: 0 0 48px;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        padding: 120px 0 96px;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: clamp(36px, 6vw, 56px);
+        line-height: 1.05;
+        max-width: 18ch;
+        margin: 0 auto 20px;
+      }
+      .hero h1 .accent {
+        color: var(--accent);
+      }
+      .hero .sub {
+        color: var(--text-dim);
+        font-size: clamp(15px, 1.5vw, 17px);
+        max-width: 56ch;
+        margin: 0 auto 40px;
+      }
+
+      .install {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 0;
+        max-width: 520px;
+        margin: 0 auto 28px;
+        background: var(--bg-code);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius);
+        font-size: 16px;
+        font-weight: 500;
+        overflow: hidden;
+        transition: border-color 200ms ease;
+      }
+      .install:hover {
+        border-color: var(--accent);
+      }
+      .install code {
+        flex: 1;
+        padding: 16px 20px;
+        font-family: var(--mono);
+        color: var(--text);
+        text-align: left;
+        white-space: nowrap;
+        overflow-x: auto;
+      }
+      .install code .prompt {
+        color: var(--text-faint);
+        user-select: none;
+        margin-right: 10px;
+      }
+      .install code .cmd {
+        color: var(--accent);
+      }
+      .copy-btn {
+        background: transparent;
+        border: none;
+        border-left: 1px solid var(--border-strong);
+        color: var(--text-dim);
+        padding: 0 18px;
+        cursor: pointer;
+        font-family: var(--mono);
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 120ms ease, background 120ms ease;
+      }
+      .copy-btn:hover {
+        color: var(--text);
+        background: rgba(34, 211, 238, 0.06);
+      }
+      .copy-btn.copied {
+        color: var(--success);
+      }
+      .copy-btn svg {
+        width: 13px;
+        height: 13px;
+      }
+
+      .ctas {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 20px;
+        border-radius: var(--radius);
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 500;
+        border: 1px solid var(--border-strong);
+        background: var(--bg-elevated);
+        color: var(--text);
+        cursor: pointer;
+        transition: border-color 120ms ease, color 120ms ease;
+      }
+      .btn:hover {
+        text-decoration: none;
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: #001014;
+        border-color: var(--accent);
+      }
+      .btn.primary:hover {
+        background: #67e8f9;
+        border-color: #67e8f9;
+        color: #001014;
+      }
+      .btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* ---------- How it works ---------- */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        position: relative;
+      }
+      .step {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        position: relative;
+      }
+      .step-num {
+        font-size: 11px;
+        color: var(--accent);
+        margin-bottom: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+      }
+      .step-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text);
+      }
+      .step-desc {
+        font-size: 12px;
+        color: var(--text-dim);
+        line-height: 1.5;
+      }
+
+      /* ---------- What you get ---------- */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+      }
+      .card-tag {
+        font-size: 11px;
+        color: var(--text-faint);
+        margin-bottom: 14px;
+        letter-spacing: 0.05em;
+      }
+      .card h3 {
+        font-size: 17px;
+        margin-bottom: 10px;
+      }
+      .card p {
+        margin: 0 0 14px;
+        color: var(--text-dim);
+        font-size: 13px;
+      }
+      .card ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 12px;
+        color: var(--text-faint);
+      }
+      .card ul li {
+        padding: 4px 0;
+        border-top: 1px dashed var(--border);
+      }
+      .card ul li:first-child {
+        border-top: none;
+      }
+      .card ul li::before {
+        content: '/ ';
+        color: var(--accent);
+      }
+
+      /* ---------- Providers ---------- */
+      .provider-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 13px;
+        color: var(--text);
+        font-weight: 500;
+      }
+      .badge .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .badge .dot.local {
+        background: var(--success);
+      }
+      .byok {
+        color: var(--text-dim);
+        font-size: 13px;
+      }
+
+      /* ---------- Sample terminal ---------- */
+      .terminal {
+        background: var(--bg-code);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .terminal-bar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-elevated);
+      }
+      .terminal-bar .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--border-strong);
+      }
+      .terminal-bar .label {
+        margin-left: 12px;
+        color: var(--text-faint);
+        font-size: 12px;
+      }
+      .terminal pre {
+        margin: 0;
+        padding: 24px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.65;
+        color: var(--text);
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .terminal .ok {
+        color: var(--success);
+      }
+      .terminal .dim {
+        color: var(--text-faint);
+      }
+      .terminal .acc {
+        color: var(--accent);
+      }
+      .terminal .warn {
+        color: var(--warn);
+      }
+      .terminal .bold {
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      /* ---------- Footer ---------- */
+      footer {
+        padding: 40px 0 64px;
+        color: var(--text-faint);
+        font-size: 13px;
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      footer a {
+        color: var(--text-dim);
+      }
+      footer a:hover {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 880px) {
+        .steps {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        section {
+          padding: 64px 0;
+        }
+        .hero {
+          padding: 80px 0 64px;
+        }
+      }
+
+      @media (max-width: 520px) {
+        body {
+          font-size: 14px;
+        }
+        .install {
+          font-size: 14px;
+        }
+        .install code {
+          padding: 14px 16px;
+        }
+        .copy-btn {
+          padding: 0 14px;
+        }
+        .copy-btn .copy-label {
+          display: none;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .ghost-link {
+          display: none;
+        }
+        .terminal pre {
+          font-size: 12px;
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="wrap">
+        <a href="#" class="logo">
+          <span class="prompt">$</span>serp<span class="iq">IQ</span>
+        </a>
+        <div class="nav-actions">
+          <a href="#how" class="ghost-link">How it works</a>
+          <a href="#docs" class="ghost-link">Docs</a>
+          <a
+            href="#"
+            class="gh-star"
+            data-gh-link
+            aria-label="Star serpiq on GitHub"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 2l2.6 6.3L21 9l-5 4.4 1.5 6.6L12 16.8 6.5 20 8 13.4 3 9l6.4-.7L12 2z"
+              />
+            </svg>
+            <span>Star on GitHub</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="wrap">
+          <h1>
+            AI-powered SEO audits<br />for <span class="accent">developers</span>
+          </h1>
+          <p class="sub">
+            Runs inside any codebase. Reads your code, pulls Google Search Console data, does
+            keyword research, and outputs a full audit with blog briefs and pSEO page specs.
+          </p>
+
+          <div class="install" id="install">
+            <code>
+              <span class="prompt">$</span><span class="cmd">npx serpiq audit</span>
+            </code>
+            <button class="copy-btn" id="copyBtn" aria-label="Copy install command">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+                <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+              </svg>
+              <span class="copy-label">Copy</span>
+            </button>
+          </div>
+
+          <div class="ctas">
+            <a href="#" class="btn primary" data-gh-link>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2.2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2.9-.3 1.9-.4 2.9-.4s2 .1 2.9.4c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"
+                />
+              </svg>
+              View on GitHub
+            </a>
+            <a href="#docs" class="btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4V4z"></path>
+                <path d="M4 16a4 4 0 0 1 4-4h12"></path>
+              </svg>
+              Read the Docs
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section id="how">
+        <div class="wrap">
+          <p class="eyebrow">How it works</p>
+          <h2>Five steps. One command.</h2>
+          <p class="section-lede">
+            serpiq runs the whole pipeline locally. No dashboards, no SaaS. Outputs land in
+            <code style="color: var(--accent)">.serpiq/</code> in your project.
+          </p>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">01</div>
+              <div class="step-title">Analyse codebase</div>
+              <div class="step-desc">
+                Reads README, package.json, landing page, sitemap, and the directory tree.
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <div class="step-title">Fetch GSC data</div>
+              <div class="step-desc">
+                Pulls 90 days of queries and pages from Google Search Console.
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <div class="step-title">Keyword research</div>
+              <div class="step-desc">
+                Scrapes Google Autocomplete and expands seeds with the LLM.
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">04</div>
+              <div class="step-title">AI audit</div>
+              <div class="step-desc">
+                Combines everything into a prioritised plan with quick fixes.
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">05</div>
+              <div class="step-title">Output files</div>
+              <div class="step-desc">
+                Writes markdown, JSON, blog briefs, and a pSEO plan to disk.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- What you get -->
+      <section>
+        <div class="wrap">
+          <p class="eyebrow">What you get</p>
+          <h2>Files you can read, diff, and ship.</h2>
+          <p class="section-lede">
+            Everything is markdown plus JSON. Commit it, share it, paste it into Cursor, or pipe it
+            into your own scripts.
+          </p>
+
+          <div class="cards">
+            <div class="card">
+              <div class="card-tag">.serpiq/audit-{date}.md</div>
+              <h3>Audit Report</h3>
+              <p>The full strategy doc. Health score, prioritised fixes, and CTR opportunities.</p>
+              <ul>
+                <li>Health score 0 to 100</li>
+                <li>Quick fixes table</li>
+                <li>Striking-distance keywords</li>
+                <li>Low-CTR queries</li>
+                <li>Declining pages</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-tag">.serpiq/blog-briefs/</div>
+              <h3>Blog Briefs</h3>
+              <p>One markdown brief per recommended post. Hand it to a writer or to an AI.</p>
+              <ul>
+                <li>Target keyword + intent</li>
+                <li>Suggested title</li>
+                <li>Section-by-section outline</li>
+                <li>Word count target</li>
+                <li>Priority</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-tag">.serpiq/pseo/pseo-plan.md</div>
+              <h3>pSEO Plan</h3>
+              <p>Programmatic page templates with URL patterns and where the data comes from.</p>
+              <ul>
+                <li>URL pattern</li>
+                <li>Estimated page count</li>
+                <li>Data source</li>
+                <li>Example pages</li>
+                <li>Implementation notes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Providers -->
+      <section>
+        <div class="wrap">
+          <p class="eyebrow">LLM providers</p>
+          <h2>Bring your own API key.</h2>
+          <p class="section-lede">
+            serpiq is a thin wrapper around an LLM. Pick the provider you trust, or run a model
+            locally with Ollama. Nothing is stored on our servers because there are no servers.
+          </p>
+
+          <div class="provider-row">
+            <span class="badge"><span class="dot"></span>Anthropic</span>
+            <span class="badge"><span class="dot"></span>OpenAI</span>
+            <span class="badge"><span class="dot"></span>OpenRouter</span>
+            <span class="badge"><span class="dot"></span>Groq</span>
+            <span class="badge"><span class="dot"></span>Together</span>
+            <span class="badge"><span class="dot"></span>Mistral</span>
+            <span class="badge"><span class="dot local"></span>Ollama (local)</span>
+          </div>
+          <p class="byok">
+            Default model is Claude Sonnet 4.5. Switch with
+            <code style="color: var(--accent)">--provider</code> and
+            <code style="color: var(--accent)">--model</code>.
+          </p>
+        </div>
+      </section>
+
+      <!-- Sample output -->
+      <section id="docs">
+        <div class="wrap">
+          <p class="eyebrow">Sample run</p>
+          <h2>What it looks like.</h2>
+          <p class="section-lede">
+            A real run on a small marketing site. Total time: about 60 seconds.
+          </p>
+
+          <div class="terminal">
+            <div class="terminal-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="label">~/code/deadsubs</span>
+            </div>
+            <pre><span class="dim">$</span> <span class="acc">npx serpiq audit --site sc-domain:deadsubs.com</span>
+
+<span class="acc bold">serpIQ</span> <span class="dim">- AI-powered SEO audit</span>
+
+<span class="dim">LLM: anthropic (claude-sonnet-4-5)</span>
+<span class="ok">✔</span> Codebase analysed: <span class="bold">deadsubs</span> (Reddit dead-subreddit finder)
+<span class="ok">✔</span> GSC data fetched: <span class="bold">847</span> queries, <span class="bold">43</span> pages, last 90 days
+<span class="ok">✔</span> Keyword research complete: <span class="bold">124</span> opportunities identified
+<span class="ok">✔</span> Audit report generated
+<span class="ok">✔</span> Outputs written to <span class="acc">.serpiq</span>
+
+<span class="dim">╭─────────────────────────────────────────────╮</span>
+<span class="dim">│</span>                                             <span class="dim">│</span>
+<span class="dim">│</span>  <span class="acc bold">serpIQ Audit Complete</span>                      <span class="dim">│</span>
+<span class="dim">│</span>  Health Score: <span class="bold">62/100</span>                       <span class="dim">│</span>
+<span class="dim">│</span>                                             <span class="dim">│</span>
+<span class="dim">│</span>  <span class="bold">12</span> quick fixes identified                  <span class="dim">│</span>
+<span class="dim">│</span>  <span class="bold">8</span> blog briefs ready                        <span class="dim">│</span>
+<span class="dim">│</span>  <span class="bold">3</span> pSEO templates (est. 450 pages)          <span class="dim">│</span>
+<span class="dim">│</span>                                             <span class="dim">│</span>
+<span class="dim">│</span>  Full report: <span class="acc">.serpiq/audit-2026-04-28.md</span>  <span class="dim">│</span>
+<span class="dim">│</span>                                             <span class="dim">│</span>
+<span class="dim">╰─────────────────────────────────────────────╯</span></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div>
+          MIT licensed. <a href="#" data-gh-link>github.com/manojahi/serpiq</a>
+        </div>
+        <div>
+          built by <a href="https://github.com/manojahi" target="_blank" rel="noopener">@manojahi</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var GH_URL = '#';
+        document.querySelectorAll('[data-gh-link]').forEach(function (el) {
+          el.setAttribute('href', GH_URL);
+        });
+
+        var btn = document.getElementById('copyBtn');
+        var label = btn ? btn.querySelector('.copy-label') : null;
+        var originalLabel = label ? label.textContent : 'Copy';
+        var resetTimer = null;
+
+        if (btn) {
+          btn.addEventListener('click', function () {
+            var text = 'npx serpiq audit';
+            var done = function () {
+              btn.classList.add('copied');
+              if (label) label.textContent = 'Copied';
+              clearTimeout(resetTimer);
+              resetTimer = setTimeout(function () {
+                btn.classList.remove('copied');
+                if (label) label.textContent = originalLabel;
+              }, 1600);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(done).catch(function () {
+                fallbackCopy(text);
+                done();
+              });
+            } else {
+              fallbackCopy(text);
+              done();
+            }
+          });
+        }
+
+        function fallbackCopy(text) {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'absolute';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand('copy');
+          } catch (e) {}
+          document.body.removeChild(ta);
+        }
+      })();
+    </script>
+  </body>
+</html>
